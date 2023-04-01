@@ -1,14 +1,17 @@
 use rocket::Rocket;
-#[get("/users")]
+#[path="../controllers/users.rs"]
+pub mod users;
+
+#[get("/all")]
 fn get_users() -> &'static str {
-    "Hello, Users!"
+    users::get_users()
 }
 
 #[get("/<id>")]
-fn get_user(id: u32) -> String {
-    format!("Hello, User {}!", id)
+fn get_user_by_id(id: u32) -> String {
+    users::get_user_by_id(id)
 }
 
 pub fn main(rocket: Rocket<rocket::Build>) -> Rocket<rocket::Build> {
-    rocket.mount("/user", routes![get_users, get_user])
+    rocket.mount("/user", routes![get_users, get_user_by_id])
 }
